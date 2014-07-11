@@ -15,7 +15,6 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/server/src/main/resources/log4j.properties" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/server/target/classes/conf/server.properties" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/server/target/classes/log4j.properties" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="DataStore.iws" />
     <ignored path=".idea/workspace.xml" />
