@@ -1,29 +1,37 @@
 package org.apache.airavata.datastore.monitor.monitors;
 
-import org.apache.airavata.datastore.monitor.Monitor;
 import org.apache.airavata.datastore.monitor.DirectoryUpdateMessage;
+import org.apache.airavata.datastore.monitor.IMonitor;
 import org.apache.airavata.datastore.monitor.dispatcher.DispatchQueue;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.HashMap;
+import java.util.Map;
 
 import static java.nio.file.StandardWatchEventKinds.*;
 
-public class FileSystemMonitor implements Monitor {
+@Service
+public class FileSystemMonitor implements IMonitor {
 
     private final Logger logger = LogManager.getLogger(FileSystemMonitor.class);
 
     private final WatchService watcher;
-    private final Path dir;
+    private final Map<WatchKey,Path> keys;
     private boolean runMonitor = false;
+    private boolean trace = false;
+
     private DispatchQueue dispatchQueue;
 
-    public FileSystemMonitor(Path dir) throws IOException {
+    public FileSystemMonitor() throws IOException {
         this.watcher = FileSystems.getDefault().newWatchService();
-        dir.register(watcher, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
-        this.dir = dir;
+        this.keys = new HashMap<WatchKey,Path>();
+
+        //Initialize dispatch queue
         this.dispatchQueue = DispatchQueue.getInstance();
     }
 
@@ -31,10 +39,9 @@ public class FileSystemMonitor implements Monitor {
      * Start directory monitoring
      */
     @Override
-    public void startMonitor(){
-        synchronized(this){
-            runMonitor = true;
-        }
+    public void startMonitor(String path) throws IOException {
+        init(path);
+        runMonitor = true;
         processEvents();
         logger.info("Started directory watching");
     }
@@ -44,18 +51,69 @@ public class FileSystemMonitor implements Monitor {
      */
     @Override
     public void stopMonitor() {
-        synchronized(this){
-            runMonitor = false;
-        }
+        runMonitor = false;
         logger.info("Stopped directory watching");
+    }
+
+    /**
+     * Initializing the FileSystemMonitor
+     *
+     * @param path
+     * @throws IOException
+     */
+    private void init(String path) throws IOException {
+        this.trace = false;
+
+        Path dir = Paths.get(path);
+        logger.info("Scanning " + dir);
+        registerAll(dir);
+        logger.info("Done.");
+
+        // enable trace after initial registration
+        this.trace = true;
+
+    }
+
+    /**
+     * Register the given directory with the WatchService
+     */
+    private void register(Path dir) throws IOException {
+        WatchKey key = dir.register(watcher, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
+        if (trace) {
+            Path prev = keys.get(key);
+            if (prev == null) {
+                logger.info("register: " + dir);
+            } else {
+                if (!dir.equals(prev)) {
+                    logger.info("update: "+ prev + " -> "+ dir);
+                }
+            }
+        }
+        keys.put(key, dir);
+    }
+
+    /**
+     * Register the given directory, and all its sub-directories, with the
+     * WatchService.
+     */
+    private void registerAll(final Path start) throws IOException {
+        // register directory and sub-directories
+        Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
+            @Override
+            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
+                    throws IOException
+            {
+                register(dir);
+                return FileVisitResult.CONTINUE;
+            }
+        });
     }
 
     /**
      * Processing directory update events
      */
-    @Override
     @SuppressWarnings("unchecked")
-    public void processEvents(){
+    private void processEvents(){
         (new Thread(new Runnable() {
             @Override
             public void run() {

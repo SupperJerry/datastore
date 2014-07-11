@@ -2,24 +2,31 @@ package org.apache.airavata.datastore.monitor;
 
 import org.apache.airavata.datastore.monitor.common.ServerProperties;
 import org.apache.airavata.datastore.monitor.dispatcher.Dispatcher;
-import org.apache.airavata.datastore.monitor.monitors.FileSystemIMonitor;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.nio.file.Paths;
 
+@Service
 public class Server {
     private static final Logger logger = LogManager.getLogger(Server.class);
     private IMonitor monitor;
     private Dispatcher dispatcher;
-    private ServerProperties props;
+
 
     public Server() throws Exception {
-        props = ServerProperties.getInstance();
         dispatcher =  new Dispatcher();
-        monitor = new FileSystemIMonitor(Paths.get(props.getDataRoot()));
+    }
+
+    @Autowired
+    public void setMonitor(IMonitor monitorImpl) throws Exception{
+        monitor = monitorImpl;
     }
 
     public void startService() throws Exception {
@@ -31,7 +38,8 @@ public class Server {
         System.out.println("\nStarting DataStore Server...!\n");
 
         //Starting directory monitor
-        monitor.startMonitor();
+        ServerProperties properties = ServerProperties.getInstance();
+        monitor.startMonitor(properties.getDataRoot());
 
         //Starting directory update message dispatcher
         dispatcher.startDispatcher();
@@ -43,7 +51,10 @@ public class Server {
     }
 
     public static void main(String[] args) throws Exception {
-        final Server monitorServer = new Server();
+        ServerProperties props = ServerProperties.getInstance();
+        ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/beans.xml");
+        BeanFactory factory = context;
+        final Server monitorServer = (Server) factory.getBean("server");
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
                 logger.info("ShutDown called...");
