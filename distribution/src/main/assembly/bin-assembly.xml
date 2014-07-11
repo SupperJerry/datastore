@@ -44,6 +44,13 @@
             </includes>
         </fileSet>
         <fileSet>
+            <directory>src/main/resources/META-INF</directory>
+            <outputDirectory>META-INF</outputDirectory>
+            <includes>
+                <include>*.xml</include>
+            </includes>
+        </fileSet>
+        <fileSet>
             <directory>..</directory>
             <outputDirectory></outputDirectory>
             <includes>
