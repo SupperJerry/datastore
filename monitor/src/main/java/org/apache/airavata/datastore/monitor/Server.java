@@ -2,7 +2,7 @@ package org.apache.airavata.datastore.monitor;
 
 import org.apache.airavata.datastore.monitor.common.ServerProperties;
 import org.apache.airavata.datastore.monitor.dispatcher.Dispatcher;
-import org.apache.airavata.datastore.monitor.monitors.FileSystemMonitor;
+import org.apache.airavata.datastore.monitor.monitors.FileSystemIMonitor;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -12,14 +12,14 @@ import java.nio.file.Paths;
 
 public class Server {
     private static final Logger logger = LogManager.getLogger(Server.class);
-    private Monitor monitor;
+    private IMonitor monitor;
     private Dispatcher dispatcher;
     private ServerProperties props;
 
     public Server() throws Exception {
         props = ServerProperties.getInstance();
         dispatcher =  new Dispatcher();
-        monitor = new FileSystemMonitor(Paths.get(props.getDataRoot()));
+        monitor = new FileSystemIMonitor(Paths.get(props.getDataRoot()));
     }
 
     public void startService() throws Exception {
