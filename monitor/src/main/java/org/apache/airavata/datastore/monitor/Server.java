@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 
@@ -52,10 +51,8 @@ public class Server {
     }
 
     public static void main(String[] args) throws Exception {
-        ServerProperties props = ServerProperties.getInstance();
-        ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/beans.xml");
-        BeanFactory factory = context;
-        final Server monitorServer = (Server) factory.getBean("server");
+        BeanFactory context = new ClassPathXmlApplicationContext("META-INF/beans.xml");
+        final Server monitorServer = (Server) context.getBean("server");
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
                 logger.info("ShutDown called...");
