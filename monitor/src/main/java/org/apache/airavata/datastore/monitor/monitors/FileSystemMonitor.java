@@ -6,9 +6,10 @@ import org.apache.airavata.datastore.monitor.dispatcher.DispatchQueue;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
 import java.nio.file.*;
+import static java.nio.file.StandardWatchEventKinds.*;
+import static java.nio.file.LinkOption.*;
+import java.io.IOException;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +25,7 @@ public class FileSystemMonitor implements IMonitor {
     private final Map<WatchKey,Path> keys;
     private boolean runMonitor = false;
     private boolean trace = false;
+    private Path rootDir = null;
 
     private DispatchQueue dispatchQueue;
 
@@ -62,6 +64,7 @@ public class FileSystemMonitor implements IMonitor {
      * @throws IOException
      */
     private void init(Path path) throws IOException {
+        this.rootDir = path;
         this.trace = false;
 
         logger.info("Scanning " + path);
@@ -131,13 +134,21 @@ public class FileSystemMonitor implements IMonitor {
                         }
                         WatchEvent<Path> ev = (WatchEvent<Path>)event;
                         Path fileName = ev.context();
+                        Path parentPath = rootDir.resolve(keys.get(key).toString());
                         DirectoryUpdateMessage directoryUpdateMessage;
+
                         if (kind == OVERFLOW) {
                             continue;
+                        } else if(kind == ENTRY_CREATE && Files.isDirectory(parentPath.resolve(fileName), NOFOLLOW_LINKS)){
+                            try {
+                                registerAll(parentPath.resolve(fileName));
+                            } catch (IOException e) {
+                                logger.error(e.toString());
+                            }
                         } else if (kind == ENTRY_CREATE) {
                             logger.info("New file created. File name: "+fileName.toString());
                             // file create event
-                            directoryUpdateMessage = new DirectoryUpdateMessage(fileName.toString());
+                            directoryUpdateMessage = new DirectoryUpdateMessage(fileName, parentPath);
                             dispatchQueue.addMsgToQueue(directoryUpdateMessage);
                         } else if (kind == ENTRY_DELETE) {
                             // file delete event
