@@ -9,7 +9,7 @@
 *.ear
 
 target/
-
+data_root/
 .idea/
 
 *.iml
