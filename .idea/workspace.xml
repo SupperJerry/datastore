@@ -2,19 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="efba305a-496f-4a35-974d-22f39ee940be" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/server/pom.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/server/server.iml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/server/src/main/java/org/apache/airavata/datastore/server/Server.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/server/src/main/java/org/apache/airavata/datastore/server/common/ServerProperties.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/server/src/main/java/org/apache/airavata/datastore/server/dispatcher/DispatchQueue.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/server/src/main/java/org/apache/airavata/datastore/server/dispatcher/Dispatcher.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/server/src/main/java/org/apache/airavata/datastore/server/monitor/AbstractMonitor.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/server/src/main/java/org/apache/airavata/datastore/server/monitor/DirectoryUpdateMessage.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/server/src/main/java/org/apache/airavata/datastore/server/monitor/FileSystemMonitor.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/server/src/main/resources/conf/server.properties" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/server/src/main/resources/log4j.properties" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/server/target/classes/conf/server.properties" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/server/target/classes/log4j.properties" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="DataStore.iws" />
     <ignored path=".idea/workspace.xml" />
