@@ -39,7 +39,7 @@ public class FileSystemMonitor implements IMonitor {
      * Start directory monitoring
      */
     @Override
-    public void startMonitor(String path) throws IOException {
+    public void startMonitor(Path path) throws IOException {
         init(path);
         runMonitor = true;
         processEvents();
@@ -61,12 +61,11 @@ public class FileSystemMonitor implements IMonitor {
      * @param path
      * @throws IOException
      */
-    private void init(String path) throws IOException {
+    private void init(Path path) throws IOException {
         this.trace = false;
 
-        Path dir = Paths.get(path);
-        logger.info("Scanning " + dir);
-        registerAll(dir);
+        logger.info("Scanning " + path);
+        registerAll(path);
         logger.info("Done.");
 
         // enable trace after initial registration

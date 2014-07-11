@@ -12,6 +12,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.nio.file.Paths;
 
 @Service
 public class Server {
@@ -35,11 +36,11 @@ public class Server {
             PropertyConfigurator.configure(ServerProperties.LOG4J_PROPERTY_FILE);
         }
 
-        System.out.println("\nStarting DataStore Server...!\n");
+        System.out.println("\nStarting Monitor Server...!\n");
 
         //Starting directory monitor
         ServerProperties properties = ServerProperties.getInstance();
-        monitor.startMonitor(properties.getDataRoot());
+        monitor.startMonitor(Paths.get(properties.getDataRoot()));
 
         //Starting directory update message dispatcher
         dispatcher.startDispatcher();
@@ -47,7 +48,7 @@ public class Server {
 
     public void stopService(){
         monitor.stopMonitor();
-        System.out.println("\nGood bye from DataStore Server...!\n");
+        System.out.println("\nGood bye from Monitor Server...!\n");
     }
 
     public static void main(String[] args) throws Exception {
