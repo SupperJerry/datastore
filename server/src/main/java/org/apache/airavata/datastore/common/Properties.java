@@ -13,8 +13,10 @@ public class Properties {
     public static final String LOG4J_PROPERTY_FILE = "../conf/log4j.properties";
 
     private static final String DATA_ROOT = "data.root";
+    private static final String MAX_PARSER_THREADS = "dispatcher.max_parser_threads";
 
     private String dataRoot = null;
+    private int maxParserThreads;
 
     private Properties() throws Exception {
         this.loadServerProperties();
@@ -46,10 +48,12 @@ public class Properties {
         InputStream file = getServerPropertiesURL();
         properties.load(file);
         dataRoot = (String) properties.get(DATA_ROOT);
+        maxParserThreads = Integer.parseInt((String)properties.get(MAX_PARSER_THREADS));
     }
 
     public String getDataRoot() {
         return dataRoot;
     }
 
+    public int getMaxParserThreads() { return maxParserThreads; }
 }

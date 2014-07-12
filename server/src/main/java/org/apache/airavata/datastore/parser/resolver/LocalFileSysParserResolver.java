@@ -2,12 +2,9 @@ package org.apache.airavata.datastore.parser.resolver;
 
 import org.apache.airavata.datastore.monitor.FileWatcherMessage;
 import org.apache.airavata.datastore.monitor.MonitorService;
-import org.apache.airavata.datastore.parser.IParser;
-import org.apache.airavata.datastore.parser.impl.DummyParser;
-import org.apache.airavata.datastore.parser.resolver.IParserResolver;
+import org.apache.airavata.datastore.parser.Parser;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.util.Properties;
@@ -37,11 +34,11 @@ public class LocalFileSysParserResolver implements IParserResolver{
     }
 
     @Override
-    public IParser getParser(FileWatcherMessage fileWatcherMessage){
+    public Parser getParser(FileWatcherMessage fileWatcherMessage){
         String className = (String) properties.get(fileWatcherMessage.getParentPath().toString());
         if(!className.isEmpty()) {
             try {
-                return (IParser) Class.forName(className).newInstance();
+                return (Parser) Class.forName(className).newInstance();
             } catch (Exception e) {
                 logger.error(e.toString());
             }

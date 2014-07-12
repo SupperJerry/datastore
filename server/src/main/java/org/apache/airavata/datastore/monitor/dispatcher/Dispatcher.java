@@ -1,12 +1,16 @@
 package org.apache.airavata.datastore.monitor.dispatcher;
 
+import org.apache.airavata.datastore.common.Properties;
 import org.apache.airavata.datastore.monitor.FileWatcherMessage;
-import org.apache.airavata.datastore.parser.IParser;
+import org.apache.airavata.datastore.parser.Parser;
+import org.apache.airavata.datastore.parser.resolver.IParserResolver;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Dispatcher {
 
@@ -14,7 +18,23 @@ public class Dispatcher {
     @Autowired
     private DispatchQueue dispatchQueue;
     @Autowired
-    private IParser iParser;
+    private IParserResolver iParserResolver;
+
+    private ExecutorService exec;
+
+
+    public Dispatcher(){
+        init();
+    }
+
+    private void init(){
+        try{
+            exec = Executors.newFixedThreadPool(Properties.getInstance().getMaxParserThreads());
+        }catch (Exception e){
+            logger.error(e.toString());
+            exec = Executors.newFixedThreadPool(100);
+        }
+    }
 
     /**
      * Starts the message dispatcher
@@ -46,11 +66,9 @@ public class Dispatcher {
      */
     private void dispatch(FileWatcherMessage fileUpdateMessage) throws Exception {
         logger.info("Dispatching new message for file: " + fileUpdateMessage.getFileName());
-        HashMap<String, String> metadata = iParser.parse(fileUpdateMessage);
-        if(metadata!=null){
-            //@Todo
-            //Code for indexing the metadata
-        }
+        Parser parser = iParserResolver.getParser(fileUpdateMessage);
+        exec.execute(parser);
+        logger.info("Dispatched new message for file: " + fileUpdateMessage.getFileName());
     }
 
 }
