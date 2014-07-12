@@ -8,26 +8,21 @@ import org.apache.log4j.PropertyConfigurator;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.nio.file.Paths;
 
-@Service
 public class MonitorService {
     private static final Logger logger = LogManager.getLogger(MonitorService.class);
-    private IMonitor monitor;
-    private Dispatcher dispatcher;
-
-
-    public MonitorService() throws Exception {
-        dispatcher =  new Dispatcher();
-    }
 
     @Autowired
-    public void setMonitor(IMonitor monitorImpl) throws Exception{
-        monitor = monitorImpl;
-    }
+    private IMonitor iMonitor;
+
+    @Autowired
+    private Dispatcher dispatcher;
+
 
     public void startService() throws Exception {
         //Loading Log4J property from External Source
@@ -39,14 +34,14 @@ public class MonitorService {
 
         //Starting directory org.apache.airavata.datastore.monitor
         Properties properties = Properties.getInstance();
-        monitor.startMonitor(Paths.get(properties.getDataRoot()));
+        iMonitor.startMonitor(Paths.get(properties.getDataRoot()));
 
         //Starting directory update message dispatcher
         dispatcher.startDispatcher();
     }
 
     public void stopService(){
-        monitor.stopMonitor();
+        iMonitor.stopMonitor();
         System.out.println("\nGood bye from Monitor Server...!\n");
     }
 }

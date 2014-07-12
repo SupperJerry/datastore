@@ -9,12 +9,24 @@
            http://www.springframework.org/schema/context
            http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-    <bean id="monitor" class="org.apache.airavata.datastore.monitor.impl.LocalFileSysMonitor"/>
+    <context:annotation-config/>
 
-    <bean id="server" class="org.apache.airavata.datastore.monitor.MonitorService">
-        <property name="monitor" ref="monitor" />
-    </bean>
+    <!--Implementation for the IMonitor-->
+    <bean id="iMonitor" class="org.apache.airavata.datastore.monitor.impl.LocalFileSysMonitor"/>
 
-    <bean id="parserResolver" class="org.apache.airavata.datastore.parser.resolver.impl.LocalFileSysParserResolver"/>
+    <!--Implementation for the MonitorService-->
+    <bean id="monitorService" class="org.apache.airavata.datastore.monitor.MonitorService"/>
+
+    <!--Implementation for the Dispatcher-->
+    <bean id="dispatcher" class="org.apache.airavata.datastore.monitor.dispatcher.Dispatcher"/>
+
+    <!--Implementation for the DispatchQueue-->
+    <bean id="dispatchQueue" class="org.apache.airavata.datastore.monitor.dispatcher.DispatchQueue" factory-method="getInstance"/>
+
+    <!--Implementation for the IParser-->
+    <bean id="iParser" class="org.apache.airavata.datastore.parser.impl.AutoDetectParser"/>
+
+    <!--Implementation for the IParserResolver-->
+    <bean id="iParserResolver" class="org.apache.airavata.datastore.parser.resolver.LocalFileSysParserResolver"/>
 
 </beans>

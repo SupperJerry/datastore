@@ -30,11 +30,11 @@ public class Properties {
     private InputStream getServerPropertiesURL() throws Exception {
         InputStream file = null;
 
-        // load org.apache.airavata.datastore.monitor.properties from conf directory.
+        // load server.properties from conf directory.
         if (new File(SERVER_PROPERTY_FILE).exists()) {
             file = new FileInputStream(SERVER_PROPERTY_FILE);
         } else {
-            // try to load default org.apache.airavata.datastore.monitor.properties from class loader.
+            // try to load default parser.properties from class loader.
             file = ClassLoader.getSystemResource(DEFAULT_SERVER_PROPERTY_FILE).openStream();
         }
 

@@ -7,6 +7,7 @@ import java.io.File;
 import java.util.HashMap;
 
 public class DummyParser implements IParser {
+
     @Override
     public HashMap<String, String> parse(FileWatcherMessage fileWatcherMessage) {
         File file = new File(fileWatcherMessage.getParentPath()+File.pathSeparator+fileWatcherMessage.getFileName());

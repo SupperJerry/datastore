@@ -12,7 +12,7 @@ public class DataStore {
 
     public static void main(String[] args) throws Exception {
         BeanFactory context = new ClassPathXmlApplicationContext("META-INF/beans.xml");
-        final MonitorService monitorService = (MonitorService) context.getBean("server");
+        final MonitorService monitorService = (MonitorService) context.getBean("monitorService");
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
                 logger.info("ShutDown called...");

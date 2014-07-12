@@ -6,6 +6,8 @@ import org.apache.airavata.datastore.common.Constants;
 import org.apache.airavata.datastore.monitor.dispatcher.DispatchQueue;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import java.nio.file.*;
 import static java.nio.file.StandardWatchEventKinds.*;
@@ -15,7 +17,6 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
 import java.util.Map;
 
-@Service
 public class LocalFileSysMonitor implements IMonitor {
 
     private final Logger logger = LogManager.getLogger(LocalFileSysMonitor.class);
@@ -26,14 +27,12 @@ public class LocalFileSysMonitor implements IMonitor {
     private boolean trace = false;
     private Path rootDir = null;
 
+    @Autowired
     private DispatchQueue dispatchQueue;
 
     public LocalFileSysMonitor() throws IOException {
         this.watcher = FileSystems.getDefault().newWatchService();
         this.keys = new HashMap<WatchKey,Path>();
-
-        //Initialize dispatch queue
-        this.dispatchQueue = DispatchQueue.getInstance();
     }
 
     /**

@@ -5,5 +5,5 @@ import org.apache.airavata.datastore.parser.IParser;
 import org.apache.airavata.datastore.parser.impl.DummyParser;
 
 public interface IParserResolver {
-    public IParser createParser(FileWatcherMessage fileWatcherMessage);
+    public IParser getParser(FileWatcherMessage fileWatcherMessage);
 }

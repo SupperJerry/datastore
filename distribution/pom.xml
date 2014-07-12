@@ -6,7 +6,7 @@
     <parent>
         <artifactId>datastore</artifactId>
         <groupId>org.apache.airavata.datastore</groupId>
-        <version>0.1-SNAPSHOT</version>
+        <version>${version}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -17,7 +17,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <archieve.name>apache-airavata-datastore</archieve.name>
+        <archieve.name>airavata-datastore</archieve.name>
     </properties>
 
     <build>
@@ -47,5 +47,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

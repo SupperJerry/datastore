@@ -8,7 +8,7 @@
     <artifactId>datastore</artifactId>
     <packaging>pom</packaging>
     <name>DataStore</name>
-    <version>0.1-SNAPSHOT</version>
+    <version>${version}</version>
 
     <licenses>
         <license>
@@ -20,13 +20,12 @@
 
     <modules>
         <module>distribution</module>
-        <module>org.apache.airavata.datastore.monitor</module>
-        <module>parser</module>
         <module>server</module>
     </modules>
 
 
     <properties>
+        <version>0.1-SNAPSHOT</version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <skipTests>false</skipTests>
