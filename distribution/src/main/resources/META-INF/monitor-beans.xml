@@ -9,7 +9,7 @@
            http://www.springframework.org/schema/context
            http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-    <bean id="org.apache.airavata.datastore.monitor" class="org.apache.airavata.datastore.monitor.monitors.FileSystemMonitor"/>
+    <bean id="org.apache.airavata.datastore.monitor" class="org.apache.airavata.datastore.monitor.impl.FileSystemMonitor"/>
 
     <bean id="server" class="org.apache.airavata.datastore.monitor.Server">
         <property name="org.apache.airavata.datastore.monitor" ref="org.apache.airavata.datastore.monitor" />

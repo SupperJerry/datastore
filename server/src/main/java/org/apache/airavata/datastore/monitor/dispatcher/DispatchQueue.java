@@ -1,15 +1,15 @@
 package org.apache.airavata.datastore.monitor.dispatcher;
 
-import org.apache.airavata.datastore.monitor.FileUpdateMessage;
+import org.apache.airavata.datastore.monitor.FileWatcherMessage;
 
 import java.util.LinkedList;
 
 public class DispatchQueue {
-    private LinkedList<FileUpdateMessage> queue;
+    private LinkedList<FileWatcherMessage> queue;
     public static DispatchQueue instance;
 
     private DispatchQueue() {
-        queue = new LinkedList<FileUpdateMessage>();
+        queue = new LinkedList<FileWatcherMessage>();
     }
 
     /**
@@ -17,7 +17,7 @@ public class DispatchQueue {
      *
      * @param directoryUpdateMessage
      */
-    public synchronized void addMsgToQueue(FileUpdateMessage directoryUpdateMessage){
+    public synchronized void addMsgToQueue(FileWatcherMessage directoryUpdateMessage){
         queue.add(directoryUpdateMessage);
         notifyAll();
     }
@@ -27,8 +27,8 @@ public class DispatchQueue {
      *
      * @return DirectoryUpdateMessage object
      */
-    public synchronized FileUpdateMessage getMsgFromQueue(){
-        FileUpdateMessage directoryUpdateMessage = queue.pollFirst();
+    public synchronized FileWatcherMessage getMsgFromQueue(){
+        FileWatcherMessage directoryUpdateMessage = queue.pollFirst();
         while(directoryUpdateMessage ==null){
             try {
                 wait();

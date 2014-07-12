@@ -1,8 +1,10 @@
 package org.apache.airavata.datastore.parser;
 
+import org.apache.airavata.datastore.monitor.FileWatcherMessage;
+
 import java.io.File;
-import java.util.Map;
+import java.util.HashMap;
 
 public interface IParser {
-    public Map<String, String> parse(File file);
+    public HashMap<String, String> parse(FileWatcherMessage fileWatcherMessage);
 }

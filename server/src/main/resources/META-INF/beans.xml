@@ -9,10 +9,12 @@
            http://www.springframework.org/schema/context
            http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-    <bean id="monitor" class="org.apache.airavata.datastore.monitor.monitors.LFSMonitor"/>
+    <bean id="monitor" class="org.apache.airavata.datastore.monitor.impl.LocalFileSysMonitor"/>
 
     <bean id="server" class="org.apache.airavata.datastore.monitor.MonitorService">
         <property name="monitor" ref="monitor" />
     </bean>
+
+    <bean id="parserResolver" class="org.apache.airavata.datastore.parser.resolver.impl.LocalFileSysParserResolver"/>
 
 </beans>
