@@ -20,8 +20,9 @@
 
     <modules>
         <module>distribution</module>
-        <module>monitor</module>
+        <module>org.apache.airavata.datastore.monitor</module>
         <module>parser</module>
+        <module>server</module>
     </modules>
 
 
