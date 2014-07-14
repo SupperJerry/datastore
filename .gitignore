@@ -11,6 +11,8 @@
 target/
 data_root/
 .idea/
+cassandra/
+*.ser
 
 *.iml
 
