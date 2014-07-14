@@ -35,7 +35,7 @@ public class LocalFileSysParserResolver implements IParserResolver{
 
     @Override
     public Parser getParser(FileWatcherMessage fileWatcherMessage){
-        String className = (String) properties.get(fileWatcherMessage.getParentPath().toString());
+        String className = (String) properties.get((new File(fileWatcherMessage.getFilePath()).getParent().toString()));
         if(!className.isEmpty()) {
             try {
                 return (Parser) Class.forName(className).newInstance();
@@ -43,7 +43,7 @@ public class LocalFileSysParserResolver implements IParserResolver{
                 logger.error(e.toString());
             }
         }
-        logger.error("No entry in the properties file for the directory: "+fileWatcherMessage.getParentPath());
+        logger.error("No entry in the properties file for the directory: "+fileWatcherMessage.getFilePath());
         return null;
     }
 }

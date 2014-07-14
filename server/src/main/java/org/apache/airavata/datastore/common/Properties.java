@@ -1,10 +1,16 @@
 package org.apache.airavata.datastore.common;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 public class Properties {
+    private final Logger logger = LogManager.getLogger(Properties.class);
+
     private static Properties props = null;
 
     public static final String SERVER_PROPERTY_FILE = "../conf/server.properties";
@@ -14,15 +20,17 @@ public class Properties {
 
     private static final String DATA_ROOT = "data.root";
     private static final String MAX_PARSER_THREADS = "dispatcher.max_parser_threads";
+    private static final String BATCH_MONITOR_WAIT_TIME = "batch_monitor.wait_time";
 
     private String dataRoot = null;
     private int maxParserThreads;
+    private long waitTime;
 
-    private Properties() throws Exception {
+    private Properties() {
         this.loadServerProperties();
     }
 
-    public static Properties getInstance() throws Exception {
+    public static Properties getInstance() {
         if (props == null) {
             props = new Properties();
         }
@@ -43,12 +51,20 @@ public class Properties {
         return file;
     }
 
-    private void loadServerProperties() throws Exception {
+    private void loadServerProperties(){
         java.util.Properties properties = new java.util.Properties();
-        InputStream file = getServerPropertiesURL();
-        properties.load(file);
-        dataRoot = (String) properties.get(DATA_ROOT);
-        maxParserThreads = Integer.parseInt((String)properties.get(MAX_PARSER_THREADS));
+        InputStream file;
+        try {
+            file = getServerPropertiesURL();
+            properties.load(file);
+            dataRoot = (String) properties.get(DATA_ROOT);
+            maxParserThreads = Integer.parseInt((String)properties.get(MAX_PARSER_THREADS));
+            waitTime = Long.parseLong((String)properties.get(BATCH_MONITOR_WAIT_TIME));
+        } catch (IOException e) {
+            logger.error(e.toString());
+        } catch (Exception e) {
+            logger.error(e.toString());
+        }
     }
 
     public String getDataRoot() {
@@ -56,4 +72,8 @@ public class Properties {
     }
 
     public int getMaxParserThreads() { return maxParserThreads; }
+
+    public long getWaitTime() {
+        return waitTime;
+    }
 }

@@ -4,15 +4,15 @@ import java.nio.file.Path;
 
 public class FileWatcherMessage {
 
-    private Path fileName;
+    private String fileName;
 
-    private Path parentPath;
+    private String filePath;
 
     private String eventType;
 
-    public FileWatcherMessage(Path fileName, Path parentPath, String eventType) {
+    public FileWatcherMessage(String fileName, String filePath, String eventType) {
         this.fileName = fileName;
-        this.parentPath = parentPath;
+        this.filePath = filePath;
         this.eventType = eventType;
     }
 
@@ -24,19 +24,19 @@ public class FileWatcherMessage {
         this.eventType = eventType;
     }
 
-    public Path getParentPath() {
-        return parentPath;
+    public String getFilePath() {
+        return filePath;
     }
 
-    public void setParentPath(Path parentPath) {
-        this.parentPath = parentPath;
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 
-    public Path getFileName() {
+    public String getFileName() {
         return fileName;
     }
 
-    public void setFileName(Path fileName) {
+    public void setFileName(String fileName) {
         this.fileName = fileName;
     }
 }

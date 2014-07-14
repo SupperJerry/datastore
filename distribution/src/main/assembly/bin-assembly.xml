@@ -51,6 +51,13 @@
             </includes>
         </fileSet>
         <fileSet>
+            <directory>target/cassandra-${cassandra.version}/</directory>
+            <outputDirectory>cassandra/</outputDirectory>
+            <includes>
+                <include>**</include>
+            </includes>
+        </fileSet>
+        <fileSet>
             <directory>..</directory>
             <outputDirectory></outputDirectory>
             <includes>

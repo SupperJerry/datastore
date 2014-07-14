@@ -1,6 +1,5 @@
 package org.apache.airavata.datastore.parser.impl;
 
-import org.apache.airavata.datastore.monitor.FileWatcherMessage;
 import org.apache.airavata.datastore.parser.Parser;
 
 import java.io.File;
@@ -11,7 +10,7 @@ public class DummyParser extends Parser {
     @Override
     public HashMap<String, String> parse() {
         if(fileWatcherMessage!=null) {
-            File file = new File(fileWatcherMessage.getParentPath() + File.pathSeparator + fileWatcherMessage.getFileName());
+            File file = new File(fileWatcherMessage.getFilePath() + File.pathSeparator + fileWatcherMessage.getFileName());
 
             //metadata generation should be done. this is just example
             HashMap<String, String> map = new HashMap<String, String>();

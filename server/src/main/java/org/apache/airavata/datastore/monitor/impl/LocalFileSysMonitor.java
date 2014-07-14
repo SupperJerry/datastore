@@ -9,6 +9,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import java.io.File;
 import java.nio.file.*;
 import static java.nio.file.StandardWatchEventKinds.*;
 import static java.nio.file.LinkOption.*;
@@ -146,17 +148,20 @@ public class LocalFileSysMonitor implements IMonitor {
                         } else if (kind == ENTRY_CREATE) {
                             // file create event
                             logger.info("New file created. File name: "+fileName.toString());
-                            directoryUpdateMessage = new FileWatcherMessage(fileName, parentPath, Constants.FILE_CREATED);
+                            directoryUpdateMessage = new FileWatcherMessage(fileName.toString(),
+                                    parentPath.toString()+ File.pathSeparator+fileName, Constants.FILE_CREATED);
                             dispatchQueue.addMsgToQueue(directoryUpdateMessage);
                         } else if (kind == ENTRY_DELETE) {
                             // file delete event
                             logger.info("File deleted. File name: "+fileName.toString());
-                            directoryUpdateMessage = new FileWatcherMessage(fileName, parentPath, Constants.FILE_DELETED);
+                            directoryUpdateMessage = new FileWatcherMessage(fileName.toString(),
+                                    parentPath.toString()+ File.pathSeparator+fileName, Constants.FILE_DELETED);
                             dispatchQueue.addMsgToQueue(directoryUpdateMessage);
                         } else if (kind == ENTRY_MODIFY) {
                             // file modify event
                             logger.info("File modified. File name: "+fileName.toString());
-                            directoryUpdateMessage = new FileWatcherMessage(fileName, parentPath, Constants.FILE_MODIFIED);
+                            directoryUpdateMessage = new FileWatcherMessage(fileName.toString(),
+                                    parentPath.toString()+ File.pathSeparator+fileName, Constants.FILE_MODIFIED);
                             dispatchQueue.addMsgToQueue(directoryUpdateMessage);
                         };
                     }

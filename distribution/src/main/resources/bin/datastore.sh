@@ -18,3 +18,5 @@
 # under the License.
 
 . ./setenv.sh
+cd $DATASTORE_HOME/server/
+$JAVA_HOME/bin/java -jar airavata-datastore-0.1-SNAPSHOT.jar $*
