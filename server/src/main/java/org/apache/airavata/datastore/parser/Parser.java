@@ -5,7 +5,7 @@ import org.apache.airavata.datastore.models.FileMonitorMessage;
 
 import java.util.HashMap;
 
-public abstract class Parser implements Runnable{
+public abstract class Parser{
 
     protected FileMonitorMessage fileWatcherMessage;
 
@@ -13,10 +13,5 @@ public abstract class Parser implements Runnable{
 
     public void setFileWatcherMessage(FileMonitorMessage fileWatcherMessage){
         this.fileWatcherMessage = fileWatcherMessage;
-    }
-
-    @Override
-    public void run(){
-        this.parse();
     }
 }
