@@ -4,6 +4,7 @@ import org.apache.airavata.datastore.common.Properties;
 import org.apache.airavata.datastore.models.FileMetadata;
 import org.apache.airavata.datastore.models.FileMonitorMessage;
 import org.apache.airavata.datastore.parser.Parser;
+import org.apache.airavata.datastore.parser.impl.AutoDetectParser;
 import org.apache.airavata.datastore.parser.resolver.IParserResolver;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -74,8 +75,8 @@ public class MonitorDispatcher {
         exec.execute(new Runnable() {
             @Override
             public void run() {
-                Parser parser = iParserResolver.getParser(fileUpdateMessage);
-                FileMetadata fileMetadata = parser.parse();
+                Parser parser = new AutoDetectParser();
+                FileMetadata fileMetadata = parser.parse(fileUpdateMessage);
                 metadataDispatcherQueue.addMetadataToQueue(fileMetadata);
             }
         });

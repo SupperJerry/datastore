@@ -1,6 +1,7 @@
 package org.apache.airavata.datastore.parser.impl;
 
 import org.apache.airavata.datastore.models.FileMetadata;
+import org.apache.airavata.datastore.models.FileMonitorMessage;
 import org.apache.airavata.datastore.parser.Parser;
 
 import java.io.File;
@@ -9,7 +10,7 @@ import java.util.HashMap;
 public class DummyParser extends Parser {
 
     @Override
-    public FileMetadata parse() {
+    public FileMetadata parse(FileMonitorMessage fileMonitorMessage) {
         if(fileWatcherMessage!=null) {
             File file = new File(fileWatcherMessage.getFilePath() + File.pathSeparator + fileWatcherMessage.getFileName());
 

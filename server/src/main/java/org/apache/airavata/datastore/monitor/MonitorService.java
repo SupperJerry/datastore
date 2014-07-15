@@ -11,6 +11,20 @@ import java.nio.file.Paths;
 public class MonitorService {
     private static final Logger logger = LogManager.getLogger(MonitorService.class);
 
+    private static MonitorService instance;
+
+    private MonitorService(){
+        MonitorService.instance = this;
+    }
+
+    public static MonitorService getInstance(){
+        if(MonitorService.instance==null){
+            return new MonitorService();
+        }
+
+        return MonitorService.instance;
+    }
+
     @Autowired
     private IMonitor iMonitor;
 

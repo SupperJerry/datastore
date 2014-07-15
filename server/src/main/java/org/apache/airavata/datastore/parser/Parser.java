@@ -9,9 +9,6 @@ public abstract class Parser{
 
     protected FileMonitorMessage fileWatcherMessage;
 
-    public abstract FileMetadata parse();
+    public abstract FileMetadata parse(FileMonitorMessage fileMonitorMessage);
 
-    public void setFileWatcherMessage(FileMonitorMessage fileWatcherMessage){
-        this.fileWatcherMessage = fileWatcherMessage;
-    }
 }

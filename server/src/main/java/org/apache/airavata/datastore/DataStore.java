@@ -2,6 +2,7 @@ package org.apache.airavata.datastore;
 
 import org.apache.airavata.datastore.common.Properties;
 import org.apache.airavata.datastore.monitor.MonitorService;
+import org.apache.airavata.datastore.orchestrator.OrchestratorService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -23,12 +24,17 @@ public class DataStore {
 
         BeanFactory context = new ClassPathXmlApplicationContext("META-INF/beans.xml");
         final MonitorService monitorService = (MonitorService) context.getBean("monitorService");
+        monitorService.startService();
+
+        final OrchestratorService orchestratorService = (OrchestratorService) context.getBean("orchestratorService");
+        orchestratorService.startService();
+
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
                 logger.info("ShutDown called...");
                 monitorService.stopService();
+                orchestratorService.stopService();
             }
         });
-        monitorService.startService();
     }
 }
