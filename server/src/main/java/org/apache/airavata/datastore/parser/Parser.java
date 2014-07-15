@@ -1,17 +1,17 @@
 package org.apache.airavata.datastore.parser;
 
-import org.apache.airavata.datastore.monitor.FileWatcherMessage;
+import org.apache.airavata.datastore.models.FileMetadata;
+import org.apache.airavata.datastore.models.FileMonitorMessage;
 
-import java.io.File;
 import java.util.HashMap;
 
 public abstract class Parser implements Runnable{
 
-    protected FileWatcherMessage fileWatcherMessage;
+    protected FileMonitorMessage fileWatcherMessage;
 
-    public abstract HashMap<String, String> parse();
+    public abstract FileMetadata parse();
 
-    public void setFileWatcherMessage(FileWatcherMessage fileWatcherMessage){
+    public void setFileWatcherMessage(FileMonitorMessage fileWatcherMessage){
         this.fileWatcherMessage = fileWatcherMessage;
     }
 

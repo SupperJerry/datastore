@@ -2,9 +2,9 @@ package org.apache.airavata.datastore.monitor.impl;
 
 import org.apache.airavata.datastore.common.Constants;
 import org.apache.airavata.datastore.common.Properties;
-import org.apache.airavata.datastore.monitor.FileWatcherMessage;
+import org.apache.airavata.datastore.models.FileMonitorMessage;
 import org.apache.airavata.datastore.monitor.IMonitor;
-import org.apache.airavata.datastore.monitor.dispatcher.DispatchQueue;
+import org.apache.airavata.datastore.orchestrator.dispatcher.MonitorDispatcherQueue;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class LocalFileSysBatchMonitor implements IMonitor{
     private boolean runMonitor;
 
     @Autowired
-    private DispatchQueue dispatchQueue;
+    private MonitorDispatcherQueue monitorDispatcherQueue;
 
     private String serialisedFileName = "snapshot.ser";
 
@@ -40,9 +40,9 @@ public class LocalFileSysBatchMonitor implements IMonitor{
             }
         }else{
             ArrayList<FileInfo> currentFiles = getCurrentFilesList(properties.getDataRoot());
-            ArrayList<FileWatcherMessage> fileWatcherMessages = new ArrayList<FileWatcherMessage>();
+            ArrayList<FileMonitorMessage> fileWatcherMessages = new ArrayList<FileMonitorMessage>();
             for(int i=0;i<currentFiles.size();i++){
-                FileWatcherMessage fileWatcherMessage = new FileWatcherMessage(currentFiles.get(i).getFileName(),
+                FileMonitorMessage fileWatcherMessage = new FileMonitorMessage(currentFiles.get(i).getFileName(),
                         currentFiles.get(i).getFilePath(), Constants.FILE_CREATED
                 );
 
@@ -52,7 +52,7 @@ public class LocalFileSysBatchMonitor implements IMonitor{
             //@Todo
             //Implement batch update
             for(int i=0;i<fileWatcherMessages.size();i++){
-                dispatchQueue.addMsgToQueue(fileWatcherMessages.get(i));
+                monitorDispatcherQueue.addMsgToQueue(fileWatcherMessages.get(i));
             }
 
             ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(serialisedFileName));
@@ -91,17 +91,17 @@ public class LocalFileSysBatchMonitor implements IMonitor{
                         Thread.sleep(waitTime);
                         HashMap<String, FileInfo> currentFilesMap = getCurrentFilesMap(properties.getDataRoot());
                         ArrayList<FileInfo> currentFilesList = getCurrentFilesList(properties.getDataRoot());
-                        ArrayList<FileWatcherMessage> fileWatcherMessages = new ArrayList<FileWatcherMessage>();
+                        ArrayList<FileMonitorMessage> fileWatcherMessages = new ArrayList<FileMonitorMessage>();
                         for(int i=0;i<snapshot.size();i++){
                             FileInfo fSnap = snapshot.get(i);
                             FileInfo fCurrent  = currentFilesMap.get(fSnap.getFilePath());
                             if(fCurrent==null){
-                                FileWatcherMessage fileWatcherMessage = new FileWatcherMessage(fSnap.getFileName(),
+                                FileMonitorMessage fileWatcherMessage = new FileMonitorMessage(fSnap.getFileName(),
                                         fSnap.getFilePath(), Constants.FILE_DELETED);
                                 fileWatcherMessages.add(fileWatcherMessage);
                             }else{
                                 if(fSnap.getLastModifiedTime()!=fCurrent.getLastModifiedTime()){
-                                    FileWatcherMessage fileWatcherMessage = new FileWatcherMessage(fSnap.getFileName(),
+                                    FileMonitorMessage fileWatcherMessage = new FileMonitorMessage(fSnap.getFileName(),
                                             fSnap.getFilePath(), Constants.FILE_MODIFIED);
                                     fileWatcherMessages.add(fileWatcherMessage);
                                 }
@@ -111,7 +111,7 @@ public class LocalFileSysBatchMonitor implements IMonitor{
                         ArrayList<FileInfo> newlyCreatedFiles = new ArrayList<FileInfo>(currentFilesMap.values());
                         for(int i=0;i<newlyCreatedFiles.size();i++){
                             FileInfo fNew = newlyCreatedFiles.get(i);
-                            FileWatcherMessage fileWatcherMessage = new FileWatcherMessage(fNew.getFileName(),
+                            FileMonitorMessage fileWatcherMessage = new FileMonitorMessage(fNew.getFileName(),
                                     fNew.getFilePath(), Constants.FILE_MODIFIED);
                             fileWatcherMessages.add(fileWatcherMessage);
                         }
@@ -120,7 +120,7 @@ public class LocalFileSysBatchMonitor implements IMonitor{
                         //@Todo
                         //Implement batch update
                         for(int i=0;i<fileWatcherMessages.size();i++){
-                            dispatchQueue.addMsgToQueue(fileWatcherMessages.get(i));
+                            monitorDispatcherQueue.addMsgToQueue(fileWatcherMessages.get(i));
                         }
 
                         try {

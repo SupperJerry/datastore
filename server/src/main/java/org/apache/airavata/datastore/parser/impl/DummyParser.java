@@ -1,5 +1,6 @@
 package org.apache.airavata.datastore.parser.impl;
 
+import org.apache.airavata.datastore.models.FileMetadata;
 import org.apache.airavata.datastore.parser.Parser;
 
 import java.io.File;
@@ -8,7 +9,7 @@ import java.util.HashMap;
 public class DummyParser extends Parser {
 
     @Override
-    public HashMap<String, String> parse() {
+    public FileMetadata parse() {
         if(fileWatcherMessage!=null) {
             File file = new File(fileWatcherMessage.getFilePath() + File.pathSeparator + fileWatcherMessage.getFileName());
 
@@ -21,7 +22,7 @@ public class DummyParser extends Parser {
             map.put("Key5", "Val5");
             map.put("Key6", "Val6");
 
-            return map;
+            return new FileMetadata();
         }
         return null;
     }

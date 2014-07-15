@@ -1,14 +1,13 @@
 package org.apache.airavata.datastore.monitor.impl;
 
-import org.apache.airavata.datastore.monitor.FileWatcherMessage;
+import org.apache.airavata.datastore.models.FileMonitorMessage;
 import org.apache.airavata.datastore.monitor.IMonitor;
 import org.apache.airavata.datastore.common.Constants;
-import org.apache.airavata.datastore.monitor.dispatcher.DispatchQueue;
+import org.apache.airavata.datastore.monitor.dispatcher.MonitorDispatchQueue;
+import org.apache.airavata.datastore.orchestrator.OrchestratorService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.nio.file.*;
@@ -30,7 +29,7 @@ public class LocalFileSysMonitor implements IMonitor {
     private Path rootDir = null;
 
     @Autowired
-    private DispatchQueue dispatchQueue;
+    private OrchestratorService orchestratorService;
 
     public LocalFileSysMonitor() throws IOException {
         this.watcher = FileSystems.getDefault().newWatchService();
@@ -135,7 +134,7 @@ public class LocalFileSysMonitor implements IMonitor {
                         WatchEvent<Path> ev = (WatchEvent<Path>)event;
                         Path fileName = ev.context();
                         Path parentPath = rootDir.resolve(keys.get(key).toString());
-                        FileWatcherMessage directoryUpdateMessage;
+                        FileMonitorMessage directoryUpdateMessage;
 
                         if (kind == OVERFLOW) {
                             continue;
@@ -148,21 +147,21 @@ public class LocalFileSysMonitor implements IMonitor {
                         } else if (kind == ENTRY_CREATE) {
                             // file create event
                             logger.info("New file created. File name: "+fileName.toString());
-                            directoryUpdateMessage = new FileWatcherMessage(fileName.toString(),
+                            directoryUpdateMessage = new FileMonitorMessage(fileName.toString(),
                                     parentPath.toString()+ File.pathSeparator+fileName, Constants.FILE_CREATED);
-                            dispatchQueue.addMsgToQueue(directoryUpdateMessage);
+                            orchestratorService.addNewFileMonitorMessage(directoryUpdateMessage);
                         } else if (kind == ENTRY_DELETE) {
                             // file delete event
                             logger.info("File deleted. File name: "+fileName.toString());
-                            directoryUpdateMessage = new FileWatcherMessage(fileName.toString(),
+                            directoryUpdateMessage = new FileMonitorMessage(fileName.toString(),
                                     parentPath.toString()+ File.pathSeparator+fileName, Constants.FILE_DELETED);
-                            dispatchQueue.addMsgToQueue(directoryUpdateMessage);
+                            orchestratorService.addNewFileMonitorMessage(directoryUpdateMessage);
                         } else if (kind == ENTRY_MODIFY) {
                             // file modify event
                             logger.info("File modified. File name: "+fileName.toString());
-                            directoryUpdateMessage = new FileWatcherMessage(fileName.toString(),
+                            directoryUpdateMessage = new FileMonitorMessage(fileName.toString(),
                                     parentPath.toString()+ File.pathSeparator+fileName, Constants.FILE_MODIFIED);
-                            dispatchQueue.addMsgToQueue(directoryUpdateMessage);
+                            orchestratorService.addNewFileMonitorMessage(directoryUpdateMessage);
                         };
                     }
                     boolean valid = key.reset();

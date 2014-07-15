@@ -17,11 +17,20 @@
     <!--MonitorService class-->
     <bean id="monitorService" class="org.apache.airavata.datastore.monitor.MonitorService"/>
 
-    <!--Dispatcher class-->
-    <bean id="dispatcher" class="org.apache.airavata.datastore.monitor.dispatcher.Dispatcher"/>
+    <!--MetadataDispatcher class-->
+    <bean id="metadataDispatcher" class="org.apache.airavata.datastore.orchestrator.dispatcher.MetadataDispatcher"/>
 
-    <!--DispatchQueue class-->
-    <bean id="dispatchQueue" class="org.apache.airavata.datastore.monitor.dispatcher.DispatchQueue" factory-method="getInstance"/>
+    <!--MetadataDispatcherQueue class-->
+    <bean id="metadataDispatcherQueue" class="org.apache.airavata.datastore.orchestrator.dispatcher.MetadataDispatcherQueue" factory-method="getInstance"/>
+
+    <!--MonitorDispatcher class-->
+    <bean id="monitorDispatcher" class="org.apache.airavata.datastore.orchestrator.dispatcher.MonitorDispatcher"/>
+
+    <!--MonitorDispatcherQueue class-->
+    <bean id="monitorDispatcherQueue" class="org.apache.airavata.datastore.orchestrator.dispatcher.MonitorDispatcherQueue" factory-method="getInstance"/>
+
+    <!--OrchestratorService class-->
+    <bean id="orchestratorService" class="org.apache.airavata.datastore.orchestrator.OrchestratorService" factory-method="getInstance"/>
 
     <!--Implementation for the IParser-->
     <bean id="iParser" class="org.apache.airavata.datastore.parser.impl.AutoDetectParser"/>
