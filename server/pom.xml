@@ -45,6 +45,11 @@
             <artifactId>spring-context</artifactId>
             <version>${springframework.version}</version>
         </dependency>
+        <dependency>
+            <groupId>me.prettyprint</groupId>
+            <artifactId>hector-core</artifactId>
+            <version>${hector.verion}</version>
+        </dependency>
     </dependencies>
 
 </project>
