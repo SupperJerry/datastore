@@ -1,11 +1,6 @@
 package org.apache.airavata.datastore.orchestrator.dispatcher;
 
-import com.sun.xml.internal.ws.api.addressing.WSEndpointReference;
-import org.apache.airavata.datastore.common.Properties;
 import org.apache.airavata.datastore.models.FileMetadata;
-import org.apache.airavata.datastore.models.FileMonitorMessage;
-import org.apache.airavata.datastore.parser.Parser;
-import org.apache.airavata.datastore.parser.resolver.IParserResolver;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

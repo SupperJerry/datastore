@@ -3,7 +3,7 @@ package org.apache.airavata.datastore.monitor.impl;
 import org.apache.airavata.datastore.models.FileMonitorMessage;
 import org.apache.airavata.datastore.monitor.IMonitor;
 import org.apache.airavata.datastore.common.Constants;
-import org.apache.airavata.datastore.monitor.dispatcher.MonitorDispatchQueue;
+import org.apache.airavata.datastore.orchestrator.dispatcher.MonitorDispatcherQueue;
 import org.apache.airavata.datastore.orchestrator.OrchestratorService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
