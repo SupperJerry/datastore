@@ -11,31 +11,40 @@
 
     <context:annotation-config/>
 
+    <!--Monitor package bean configurations-->
+
     <!--Implementation for the IMonitor-->
     <bean id="iMonitor" class="org.apache.airavata.datastore.monitor.impl.LocalFileSysBatchMonitor"/>
-
     <!--MonitorService class-->
     <bean id="monitorService" class="org.apache.airavata.datastore.monitor.MonitorService" factory-method="getInstance"/>
 
+
+
+    <!-- Orchestrator service bean configurations-->
+
     <!--OrchestratorService class-->
     <bean id="orchestratorService" class="org.apache.airavata.datastore.orchestrator.OrchestratorService" factory-method="getInstance"/>
-
     <!--MetadataDispatcher class-->
     <bean id="metadataDispatcher" class="org.apache.airavata.datastore.orchestrator.dispatcher.MetadataDispatcher"/>
-
     <!--MetadataDispatcherQueue class-->
     <bean id="metadataDispatcherQueue" class="org.apache.airavata.datastore.orchestrator.dispatcher.MetadataDispatcherQueue" factory-method="getInstance"/>
-
     <!--MonitorDispatcher class-->
     <bean id="monitorDispatcher" class="org.apache.airavata.datastore.orchestrator.dispatcher.MonitorDispatcher"/>
-
     <!--MonitorDispatcherQueue class-->
     <bean id="monitorDispatcherQueue" class="org.apache.airavata.datastore.orchestrator.dispatcher.MonitorDispatcherQueue" factory-method="getInstance"/>
 
+
+    <!--Parser package bean configurations-->
+
     <!--Implementation for the IParser-->
     <bean id="iParser" class="org.apache.airavata.datastore.parser.impl.AutoDetectParser"/>
-
     <!--Implementation for the IParserResolver-->
     <bean id="iParserResolver" class="org.apache.airavata.datastore.parser.resolver.LocalFileSysParserResolver"/>
+
+
+    <!--db package bean configurations-->
+
+    <!--DataModelImplementation class-->
+    <bean id="datamodelImpl" class="org.apache.airavata.datastore.db.CassandraDataModelImpl"/>
 
 </beans>
